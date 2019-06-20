@@ -1,4 +1,4 @@
-package com.lastminute.cdc.checkout
+package com.lastminute.cdc.checkout.flight
 
 import java.math.BigDecimal
 import java.util.*

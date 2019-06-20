@@ -1,6 +1,7 @@
-package com.lastminute.cdc.checkout
+package com.lastminute.cdc.checkout.flight
 
 import au.com.dius.pact.consumer.ConsumerPactBuilder
+import com.lastminute.cdc.checkout.runWith
 import io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -11,6 +12,7 @@ import java.util.*
 
 class RestFlightRepositoryTest {
   private val flightId = UUID.fromString("4bded7c6-284e-4be5-8b9b-76813acb4b0b")
+  private val notAvailableFlightId = UUID.randomUUID()
   private val flightDepartureTime = Instant.parse("2019-06-16T18:00:00Z")
   private val flightDepartureAirport = "MXP"
   private val flightArrivalTime = Instant.parse("2019-06-16T20:00:00Z")
@@ -18,10 +20,10 @@ class RestFlightRepositoryTest {
   private val priceAmount = BigDecimal(50.00)
   private val currency = "EUR"
 
-  private val foundFlightPact = ConsumerPactBuilder.consumer("checkout")
+  private val availableFlightPact = ConsumerPactBuilder.consumer("checkout")
     .hasPactWith("flights")
 
-    .given("found flight with id $flightId")
+    .given("available flight with id $flightId")
     .uponReceiving("request for a flight")
     .method("GET")
     .path("/flights/$flightId/")
@@ -52,8 +54,21 @@ class RestFlightRepositoryTest {
     )
     .toPact()
 
+  private val notAvailableFlightPact = ConsumerPactBuilder.consumer("checkout")
+    .hasPactWith("flights")
+
+    .given("not available flight with id $notAvailableFlightId")
+    .uponReceiving("request for a flight")
+    .method("GET")
+    .path("/flights/$flightId/")
+
+    .willRespondWith()
+    .status(404)
+
+    .toPact()
+
   @Test
-  fun `with found flight`() {
+  fun `with available flight`() {
     val expected = Flight(
       id = flightId,
       price = Money(
@@ -62,12 +77,23 @@ class RestFlightRepositoryTest {
       )
     )
 
-    val flight = runWith(foundFlightPact) { mockServer ->
+    val flight = runWith(availableFlightPact) { mockServer ->
       val repository = RestFlightRepository(RestTemplate(), mockServer.getUrl())
 
       repository.getBy(flightId)
     }
 
     assertThat(flight).isEqualTo(expected)
+  }
+
+  @Test
+  fun `with not available flight`() {
+    val flight = runWith(notAvailableFlightPact) { mockServer ->
+      val repository = RestFlightRepository(RestTemplate(), mockServer.getUrl())
+
+      repository.getBy(flightId)
+    }
+
+    assertThat(flight).isNull()
   }
 }
