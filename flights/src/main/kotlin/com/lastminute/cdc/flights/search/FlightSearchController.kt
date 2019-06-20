@@ -18,7 +18,13 @@ class FlightSearchController(
     @PathVariable("arrival") arrival: String,
     @RequestParam("date") date: String
   ): ResponseEntity<SearchResponse> {
-    return ResponseEntity.ok(SearchResponse(flightsRepository.loadBy(departure, arrival, LocalDate.parse(date))))
+    val flights = flightsRepository.loadBy(departure, arrival, LocalDate.parse(date))
+    return if (flights.isEmpty()) {
+      ResponseEntity.notFound().build()
+    }
+    else {
+      ResponseEntity.ok(SearchResponse(flights))
+    }
   }
 
   @GetMapping("/flights/{id}/")
