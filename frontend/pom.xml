@@ -102,14 +102,14 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>au.com.dius</groupId>-->
-<!--				<artifactId>pact-jvm-provider-maven_2.12</artifactId>-->
-<!--				<version>${pact.version}</version>-->
-<!--				<configuration>-->
-<!--					<pactBrokerUrl>http://localhost:9292</pactBrokerUrl>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
+			<plugin>
+				<groupId>au.com.dius</groupId>
+				<artifactId>pact-jvm-provider-maven_2.12</artifactId>
+				<version>${pact.version}</version>
+				<configuration>
+					<pactBrokerUrl>http://192.168.99.100:9292</pactBrokerUrl>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
