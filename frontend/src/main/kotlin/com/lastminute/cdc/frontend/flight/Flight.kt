@@ -1,4 +1,4 @@
-package com.lastminute.cdc.frontend.flights
+package com.lastminute.cdc.frontend.flight
 
 import java.math.BigDecimal
 import java.time.Instant
