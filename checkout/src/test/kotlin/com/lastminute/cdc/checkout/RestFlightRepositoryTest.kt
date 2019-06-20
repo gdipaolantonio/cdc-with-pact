@@ -10,7 +10,7 @@ import java.time.Instant
 import java.util.*
 
 class RestFlightRepositoryTest {
-  private val flightId = UUID.randomUUID()
+  private val flightId = UUID.fromString("4bded7c6-284e-4be5-8b9b-76813acb4b0b")
   private val flightDepartureTime = Instant.parse("2019-06-16T18:00:00Z")
   private val flightDepartureAirport = "MXP"
   private val flightArrivalTime = Instant.parse("2019-06-16T20:00:00Z")
@@ -21,8 +21,8 @@ class RestFlightRepositoryTest {
   private val foundFlightPact = ConsumerPactBuilder.consumer("checkout")
     .hasPactWith("flights")
 
-    .given("found flight")
-    .uponReceiving("request for flight with a certain id")
+    .given("found flight with id $flightId")
+    .uponReceiving("request for a flight")
     .method("GET")
     .path("/flights/$flightId/")
 
