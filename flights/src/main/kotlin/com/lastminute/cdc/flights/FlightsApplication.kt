@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class FlightsApplication {
 	@Bean
-	fun flightsRepository() = InMemoryFlightsRepository(emptyMap())
+	fun flightsRepository() = InMemoryFlightsRepository(emptyList())
 }
 
 fun main(args: Array<String>) {
