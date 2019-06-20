@@ -380,7 +380,7 @@ class InMemoryFlightsRepositoryTest {
   }
 
   @Test
-  fun `load by id`() {
+  fun `available by id`() {
     val unexpected = Flight(
       UUID.randomUUID(),
       Departure(
@@ -416,5 +416,29 @@ class InMemoryFlightsRepositoryTest {
     val flight = repository.loadBy(id)
 
     assertThat(flight).isEqualTo(expected)
+  }
+
+  @Test
+  fun `not available by id`() {
+    val unexpected = Flight(
+      UUID.fromString("4bded7c6-284e-4be5-8b9b-76813acb4b0b"),
+      Departure(
+        "2019-06-20T10:00:00.000Z",
+        "MXP",
+        "MIL"
+      ),
+      Arrival(
+        "2019-06-20T11:30:00.000Z",
+        "STN",
+        "LON"
+      ),
+      Money(TEN, "EUR")
+    )
+
+    val repository = InMemoryFlightsRepository(listOf(unexpected))
+
+    val flight = repository.loadBy(UUID.fromString("ef79d467-4864-432a-92c7-533e731cd6c3"))
+
+    assertThat(flight).isNull()
   }
 }

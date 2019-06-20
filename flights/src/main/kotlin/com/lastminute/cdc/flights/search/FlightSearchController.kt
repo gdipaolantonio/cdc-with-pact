@@ -31,7 +31,13 @@ class FlightSearchController(
   fun searchFlights(
     @PathVariable("id") id: UUID
   ): ResponseEntity<Flight> {
-    return ResponseEntity.ok(flightsRepository.loadBy(id)!!)
+    val flight = flightsRepository.loadBy(id)
+    return if (null != flight) {
+      ResponseEntity.ok(flight)
+    }
+    else {
+      ResponseEntity.notFound().build()
+    }
   }
 
   data class SearchResponse(

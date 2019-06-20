@@ -28,7 +28,8 @@ class FlightSearchControllerPactTest {
   @State(
     "available results for MIL-LON on 2019-06-16",
     "not available results for MIL-LON on 2019-06-21",
-    "found flight with id 4bded7c6-284e-4be5-8b9b-76813acb4b0b"
+    "available flight with id 4bded7c6-284e-4be5-8b9b-76813acb4b0b",
+    "not available flight with id ef79d467-4864-432a-92c7-533e731cd6c3"
   )
   fun `with 4bded7c6-284e-4be5-8b9b-76813acb4b0b id`() {
     results.clear()

@@ -12,7 +12,7 @@ import java.util.*
 
 class RestFlightRepositoryTest {
   private val flightId = UUID.fromString("4bded7c6-284e-4be5-8b9b-76813acb4b0b")
-  private val notAvailableFlightId = UUID.randomUUID()
+  private val notAvailableFlightId = UUID.fromString("ef79d467-4864-432a-92c7-533e731cd6c3")
   private val flightDepartureTime = Instant.parse("2019-06-16T18:00:00Z")
   private val flightDepartureAirport = "MXP"
   private val flightArrivalTime = Instant.parse("2019-06-16T20:00:00Z")
@@ -60,7 +60,7 @@ class RestFlightRepositoryTest {
     .given("not available flight with id $notAvailableFlightId")
     .uponReceiving("request for a flight")
     .method("GET")
-    .path("/flights/$flightId/")
+    .path("/flights/$notAvailableFlightId/")
 
     .willRespondWith()
     .status(404)
@@ -91,7 +91,7 @@ class RestFlightRepositoryTest {
     val flight = runWith(notAvailableFlightPact) { mockServer ->
       val repository = RestFlightRepository(RestTemplate(), mockServer.getUrl())
 
-      repository.getBy(flightId)
+      repository.getBy(notAvailableFlightId)
     }
 
     assertThat(flight).isNull()
