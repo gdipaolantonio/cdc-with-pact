@@ -1,6 +1,7 @@
 package com.lastminute.cdc.orders
 
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.*
 import org.junit.Test
 import java.util.*
 
@@ -15,6 +16,6 @@ class InMemoryOrdersTest {
     val orderId = orders.create(flightId, userId)
 
     val expected = Order(orderId, flightId, userId)
-    Assertions.assertThat(orders.getBy(orderId)).isEqualTo(expected)
+    assertThat(orders.getBy(orderId)).isEqualTo(expected)
   }
 }
