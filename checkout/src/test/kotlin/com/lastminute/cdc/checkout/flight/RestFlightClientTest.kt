@@ -10,7 +10,7 @@ import java.math.BigDecimal
 import java.time.Instant
 import java.util.*
 
-class RestFlightRepositoryTest {
+class RestFlightClientTest {
   private val flightId = UUID.fromString("4bded7c6-284e-4be5-8b9b-76813acb4b0b")
   private val notAvailableFlightId = UUID.fromString("ef79d467-4864-432a-92c7-533e731cd6c3")
   private val flightDepartureTime = Instant.parse("2019-06-16T18:00:00Z")
@@ -78,9 +78,9 @@ class RestFlightRepositoryTest {
     )
 
     val flight = runWith(availableFlightPact) { mockServer ->
-      val repository = RestFlightRepository(RestTemplate(), mockServer.getUrl())
+      val client = RestFlightClient(RestTemplate(), mockServer.getUrl())
 
-      repository.getBy(flightId)
+      client.getBy(flightId)
     }
 
     assertThat(flight).isEqualTo(expected)
@@ -89,9 +89,9 @@ class RestFlightRepositoryTest {
   @Test
   fun `with not available flight`() {
     val flight = runWith(notAvailableFlightPact) { mockServer ->
-      val repository = RestFlightRepository(RestTemplate(), mockServer.getUrl())
+      val client = RestFlightClient(RestTemplate(), mockServer.getUrl())
 
-      repository.getBy(notAvailableFlightId)
+      client.getBy(notAvailableFlightId)
     }
 
     assertThat(flight).isNull()

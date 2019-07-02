@@ -4,7 +4,7 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.util.*
 
-class RestFlightRepository(
+class RestFlightClient(
   private val restTemplate: RestTemplate,
   baseUrl: String
 ) {
