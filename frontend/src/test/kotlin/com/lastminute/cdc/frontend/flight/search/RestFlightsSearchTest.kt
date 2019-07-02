@@ -44,28 +44,25 @@ class RestFlightsSearchTest {
     .headers(mapOf("Content-Type" to "application/json"))
     .body(
       newJsonBody { root ->
-        root.array("flights") { array ->
-          array.`object` { flight ->
-            flight.stringType("id", flightId.toString())
+        root.eachLike("flights") { flight ->
+          flight.stringType("id", flightId.toString())
 
-            flight.`object`("departure") { departure ->
-              departure.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightDepartureTime), TimeZone.getTimeZone("Z"))
-              departure.stringType("airport", flightDepartureAirport)
-            }
+          flight.`object`("departure") { departure ->
+            departure.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightDepartureTime), TimeZone.getTimeZone("Z"))
+            departure.stringType("airport", flightDepartureAirport)
+          }
 
-            flight.`object`("arrival") { arrival ->
-              arrival.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightArrivalTime), TimeZone.getTimeZone("Z"))
-              arrival.stringType("airport", flightArrivalAirport)
-            }
+          flight.`object`("arrival") { arrival ->
+            arrival.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightArrivalTime), TimeZone.getTimeZone("Z"))
+            arrival.stringType("airport", flightArrivalAirport)
+          }
 
-            flight.`object`("price") { price ->
-              price.decimalType("amount", priceAmount)
-              price.stringType("currency", currency)
-            }
+          flight.`object`("price") { price ->
+            price.decimalType("amount", priceAmount)
+            price.stringType("currency", currency)
           }
         }
-      }
-        .build()
+      }.build()
     )
     .toPact()
 
