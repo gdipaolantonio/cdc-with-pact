@@ -15,7 +15,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.util.*
 
-class FlightsSearchTest {
+class RestFlightsSearchTest {
   private val requestDeparture: String = "MIL"
   private val requestArrival: String = "LON"
   private val requestDate: LocalDate = LocalDate.parse("2019-06-16")
@@ -100,7 +100,7 @@ class FlightsSearchTest {
     )
 
     val flights: List<Flight>? = runWith(availableFlightsPact) { mockServer ->
-      val repository = FlightsSearch(RestTemplate(), mockServer.getUrl())
+      val repository = RestFlightsSearch(RestTemplate(), mockServer.getUrl())
 
       repository.by(
         departure = requestDeparture,
@@ -115,7 +115,7 @@ class FlightsSearchTest {
   @Test
   fun `without available flights`() {
     val flights: List<Flight>? = runWith(notAvailableFlightsPact) { mockServer ->
-      val repository = FlightsSearch(RestTemplate(), mockServer.getUrl())
+      val repository = RestFlightsSearch(RestTemplate(), mockServer.getUrl())
 
       repository.by(
         departure = requestDeparture,

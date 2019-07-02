@@ -5,7 +5,7 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.time.LocalDate
 
-class FlightsSearch(
+class RestFlightsSearch(
   private val restTemplate: RestTemplate,
   baseUrl: String
 ) {

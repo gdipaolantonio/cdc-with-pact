@@ -3,7 +3,7 @@ package com.lastminute.cdc.frontend.flight.checkout
 import org.springframework.web.client.RestTemplate
 import java.util.*
 
-class FlightCheckout(
+class RestFlightCheckout(
   private val restTemplate: RestTemplate,
   baseUrl: String
 ) {

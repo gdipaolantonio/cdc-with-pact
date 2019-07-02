@@ -8,7 +8,7 @@ import org.junit.Test
 import org.springframework.web.client.RestTemplate
 import java.util.*
 
-class FlightCheckoutTest {
+class RestFlightCheckoutTest {
   private val flightId = UUID.fromString("47e2f0e6-a848-48c8-b1ab-e3dd80a80829")
   private val userId = "alice"
 
@@ -34,7 +34,7 @@ class FlightCheckoutTest {
   @Test
   fun `checkout successfully for a user`() {
     runWith(checkoutSuccessfullyPact) { mockServer ->
-      val flightCheckout = FlightCheckout(RestTemplate(), mockServer.getUrl())
+      val flightCheckout = RestFlightCheckout(RestTemplate(), mockServer.getUrl())
       flightCheckout.checkoutFlight(flightId, userId)
     }
   }
