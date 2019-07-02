@@ -3,11 +3,9 @@ package com.lastminute.cdc.frontend.flight.checkout
 import au.com.dius.pact.consumer.ConsumerPactBuilder
 import au.com.dius.pact.model.RequestResponsePact
 import com.lastminute.cdc.frontend.runWith
-import io.pactfoundation.consumer.dsl.LambdaDsl.*
-import org.assertj.core.api.Assertions.*
+import io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody
 import org.junit.Test
 import org.springframework.web.client.RestTemplate
-import java.net.URI
 import java.util.*
 
 class FlightCheckoutTest {
