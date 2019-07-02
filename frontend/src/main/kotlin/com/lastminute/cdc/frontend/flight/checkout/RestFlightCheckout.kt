@@ -7,7 +7,7 @@ class RestFlightCheckout(
   private val restTemplate: RestTemplate,
   baseUrl: String
 ) {
-  private val url = "$baseUrl/checkout/flight/"
+  private val url = "$baseUrl/checkout/"
 
   fun checkoutFlight(flightId: UUID, userId: String) {
     restTemplate.postForEntity(url, Request(flightId, userId), Void::class.java)

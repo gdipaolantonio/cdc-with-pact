@@ -46,7 +46,7 @@ class RestFlightsSearchTest {
       newJsonBody { root ->
         root.array("flights") { array ->
           array.`object` { flight ->
-            flight.uuid("id", flightId)
+            flight.stringType("id", flightId.toString())
 
             flight.`object`("departure") { departure ->
               departure.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightDepartureTime), TimeZone.getTimeZone("Z"))

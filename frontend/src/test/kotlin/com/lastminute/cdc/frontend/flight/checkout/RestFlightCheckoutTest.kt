@@ -20,7 +20,7 @@ class RestFlightCheckoutTest {
     .uponReceiving("request to checkout flight with id $flightId for user $userId")
     .method("POST")
     .headers(mapOf("Content-Type" to "application/json"))
-    .path("/checkout/flight/")
+    .path("/checkout/")
     .body(newJsonBody { root ->
       root.uuid("flightId", flightId)
       root.stringType("userId", userId)

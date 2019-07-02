@@ -7,7 +7,7 @@ class RestOrderClient(
   private val restTemplate: RestTemplate,
   baseUrl: String
 ) {
-  private val url = "$baseUrl/orders/flight/"
+  private val url = "$baseUrl/orders/"
 
   fun createOrder(flightId: UUID, userId: String) {
     restTemplate.postForEntity(url, Request(flightId, userId), Void::class.java)

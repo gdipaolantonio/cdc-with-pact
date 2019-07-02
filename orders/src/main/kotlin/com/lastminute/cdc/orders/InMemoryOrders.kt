@@ -11,5 +11,7 @@ class InMemoryOrders : Orders {
     return orderId
   }
 
+  override fun getBy(userId: String): List<Order> = ordersList.filter { order -> order.userId == userId }
+
   fun getBy(orderId: UUID): Order? = ordersList.find { order -> order.orderId == orderId }
 }

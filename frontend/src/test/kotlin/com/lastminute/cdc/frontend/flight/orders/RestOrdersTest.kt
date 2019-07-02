@@ -26,11 +26,9 @@ class RestOrdersTest {
     .willRespondWith()
     .status(200)
     .body(newJsonBody { root ->
-      root.array("orders") { array ->
-        array.`object` { order ->
-          order.uuid("orderId", orderId)
-          order.uuid("flightId", flightId)
-        }
+      root.eachLike("orders") { order ->
+        order.stringType("orderId", orderId.toString())
+        order.stringType("flightId", flightId.toString())
       }
     }.build())
 

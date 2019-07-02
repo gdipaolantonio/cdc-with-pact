@@ -19,7 +19,7 @@ class RestOrderClientTest {
 
     .uponReceiving("valid request for order creation")
     .method("POST")
-    .path("/orders/flight/")
+    .path("/orders/")
     .headers(mapOf("Content-Type" to "application/json"))
     .body(LambdaDsl.newJsonBody { root ->
       root.uuid("flightId", flightId)
