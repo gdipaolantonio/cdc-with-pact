@@ -81,6 +81,52 @@ class RestFlightsSearchTest {
     .status(404)
     .toPact()
 
+  private val availableFlightByIdPact = ConsumerPactBuilder.consumer("frontend")
+    .hasPactWith("flights")
+
+    .given("available flight with id $flightId")
+
+    .uponReceiving("request for flight by id")
+    .method("GET")
+    .path("/flights/$flightId/")
+
+    .willRespondWith()
+    .status(200)
+    .body(newJsonBody { flight ->
+      flight.uuid("id", flightId)
+
+      flight.`object`("departure") { departure ->
+        departure.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightDepartureTime), TimeZone.getTimeZone("Z"))
+        departure.stringType("airport", flightDepartureAirport)
+      }
+
+      flight.`object`("arrival") { arrival ->
+        arrival.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightArrivalTime), TimeZone.getTimeZone("Z"))
+        arrival.stringType("airport", flightArrivalAirport)
+      }
+
+      flight.`object`("price") { price ->
+        price.decimalType("amount", priceAmount)
+        price.stringType("currency", currency)
+      }
+    }.build())
+
+    .toPact()
+
+  private val notAvailableFlightByIdPact = ConsumerPactBuilder.consumer("frontend")
+    .hasPactWith("flights")
+
+    .given("not available flight with id $flightId")
+
+    .uponReceiving("request for flight by id")
+    .method("GET")
+    .path("/flights/$flightId/")
+
+    .willRespondWith()
+    .status(404)
+
+    .toPact()
+
   @Test
   fun `with at least one flight found`() {
     val expected = Flight(
@@ -100,9 +146,9 @@ class RestFlightsSearchTest {
     )
 
     val flights: List<Flight>? = runWith(availableFlightsPact) { mockServer ->
-      val repository = RestFlightsSearch(RestTemplate(), mockServer.getUrl())
+      val flightsSearch = RestFlightsSearch(RestTemplate(), mockServer.getUrl())
 
-      repository.by(
+      flightsSearch.by(
         departure = requestDeparture,
         arrival = requestArrival,
         date = requestDate
@@ -115,9 +161,9 @@ class RestFlightsSearchTest {
   @Test
   fun `without available flights`() {
     val flights: List<Flight>? = runWith(notAvailableFlightsPact) { mockServer ->
-      val repository = RestFlightsSearch(RestTemplate(), mockServer.getUrl())
+      val flightsSearch = RestFlightsSearch(RestTemplate(), mockServer.getUrl())
 
-      repository.by(
+      flightsSearch.by(
         departure = requestDeparture,
         arrival = requestArrival,
         date = notAvailableRequestDate
@@ -125,5 +171,43 @@ class RestFlightsSearchTest {
     }
 
     assertThat(flights).isEmpty()
+  }
+
+  @Test
+  fun `with one flight found by id`() {
+    val expected = Flight(
+      id = flightId,
+      departure = Departure(
+        time = flightDepartureTime,
+        airport = flightDepartureAirport
+      ),
+      arrival = Arrival(
+        time = flightArrivalTime,
+        airport = flightArrivalAirport
+      ),
+      price = Money(
+        amount = priceAmount,
+        currency = currency
+      )
+    )
+
+    val flight: Flight? = runWith(availableFlightByIdPact) { mockServer ->
+      val flightsSearch = RestFlightsSearch(RestTemplate(), mockServer.getUrl())
+
+      flightsSearch.by(flightId)
+    }
+
+    assertThat(flight).isEqualTo(expected)
+  }
+
+  @Test
+  fun `with flight not found by id`() {
+    val flight: Flight? = runWith(notAvailableFlightByIdPact) { mockServer ->
+      val flightsSearch = RestFlightsSearch(RestTemplate(), mockServer.getUrl())
+
+      flightsSearch.by(flightId)
+    }
+
+    assertThat(flight).isNull()
   }
 }
