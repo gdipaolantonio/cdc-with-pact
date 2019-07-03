@@ -6,8 +6,11 @@ import au.com.dius.pact.consumer.PactVerificationResult
 import au.com.dius.pact.consumer.runConsumerTest
 import au.com.dius.pact.model.MockProviderConfig
 import au.com.dius.pact.model.RequestResponsePact
+import io.pactfoundation.consumer.dsl.LambdaDslObject
+import java.time.Instant
+import java.util.*
 
-fun <T> runWith(pact: RequestResponsePact, test: (MockServer) -> T?): T? {
+internal fun <T> runWith(pact: RequestResponsePact, test: (MockServer) -> T?): T? {
   var result: T? = null
   val pactVerificationResult = runConsumerTest(pact, MockProviderConfig.createDefault(), object : PactTestRun {
     override fun run(mockServer: MockServer) {
@@ -19,4 +22,8 @@ fun <T> runWith(pact: RequestResponsePact, test: (MockServer) -> T?): T? {
     is PactVerificationResult.Ok -> result
     else -> throw AssertionError(pactVerificationResult.toString())
   }
+}
+
+internal fun putTimestamp(target: LambdaDslObject, instant: Instant) {
+  target.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(instant), TimeZone.getTimeZone("Z"))
 }

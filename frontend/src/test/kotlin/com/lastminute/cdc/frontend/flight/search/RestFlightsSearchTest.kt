@@ -5,6 +5,7 @@ import com.lastminute.cdc.frontend.flight.Arrival
 import com.lastminute.cdc.frontend.flight.Departure
 import com.lastminute.cdc.frontend.flight.Flight
 import com.lastminute.cdc.frontend.flight.Money
+import com.lastminute.cdc.frontend.putTimestamp
 import com.lastminute.cdc.frontend.runWith
 import io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody
 import io.pactfoundation.consumer.dsl.LambdaDslObject
@@ -111,10 +112,6 @@ class RestFlightsSearchTest {
     }.build())
 
     .toPact()
-
-  private fun putTimestamp(target: LambdaDslObject, instant: Instant) {
-    target.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(instant), TimeZone.getTimeZone("Z"))
-  }
 
   private val notAvailableFlightByIdPact = ConsumerPactBuilder.consumer("frontend")
     .hasPactWith("flights")
