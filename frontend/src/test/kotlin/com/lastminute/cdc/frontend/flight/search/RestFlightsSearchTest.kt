@@ -7,6 +7,7 @@ import com.lastminute.cdc.frontend.flight.Flight
 import com.lastminute.cdc.frontend.flight.Money
 import com.lastminute.cdc.frontend.runWith
 import io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody
+import io.pactfoundation.consumer.dsl.LambdaDslObject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.web.client.RestTemplate
@@ -48,12 +49,12 @@ class RestFlightsSearchTest {
           flight.stringType("id", flightId.toString())
 
           flight.`object`("departure") { departure ->
-            departure.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightDepartureTime), TimeZone.getTimeZone("Z"))
+            putTimestamp(departure, flightDepartureTime)
             departure.stringType("airport", flightDepartureAirport)
           }
 
           flight.`object`("arrival") { arrival ->
-            arrival.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightArrivalTime), TimeZone.getTimeZone("Z"))
+            putTimestamp(arrival, flightArrivalTime)
             arrival.stringType("airport", flightArrivalAirport)
           }
 
@@ -94,12 +95,12 @@ class RestFlightsSearchTest {
       flight.uuid("id", flightId)
 
       flight.`object`("departure") { departure ->
-        departure.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightDepartureTime), TimeZone.getTimeZone("Z"))
+        putTimestamp(departure, flightDepartureTime)
         departure.stringType("airport", flightDepartureAirport)
       }
 
       flight.`object`("arrival") { arrival ->
-        arrival.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(flightArrivalTime), TimeZone.getTimeZone("Z"))
+        putTimestamp(arrival, flightArrivalTime)
         arrival.stringType("airport", flightArrivalAirport)
       }
 
@@ -110,6 +111,10 @@ class RestFlightsSearchTest {
     }.build())
 
     .toPact()
+
+  private fun putTimestamp(target: LambdaDslObject, instant: Instant) {
+    target.timestamp("time", "yyyy-MM-dd'T'HH:mm:ss.SSSZZ", Date.from(instant), TimeZone.getTimeZone("Z"))
+  }
 
   private val notAvailableFlightByIdPact = ConsumerPactBuilder.consumer("frontend")
     .hasPactWith("flights")
