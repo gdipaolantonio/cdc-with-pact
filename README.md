@@ -44,8 +44,9 @@ docker start pactbroker
 ### frontend - flights
 
 #### When available:
-Request: GET /flights/{departure}/{arrival}/?date={date}
-Response: 200 status with body:
+Request: **GET /flights/{departure}/{arrival}/?date={date}**
+
+Response: **200 status with body:**
 ```json
 {
   "flights": [
@@ -69,5 +70,6 @@ Response: 200 status with body:
 ```
 
 #### When not available:
-Request: GET /flights/{departure}/{arrival}/?date={date}
-Response: 404 with empty body
+Request: **GET /flights/{departure}/{arrival}/?date={date}**
+
+Response: **404 with empty body**
