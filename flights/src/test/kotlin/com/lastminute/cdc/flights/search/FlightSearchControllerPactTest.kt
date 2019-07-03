@@ -15,13 +15,13 @@ import java.util.*
 @Provider("flights")
 @PactBroker(host = "192.168.99.100", port = "9292")
 class FlightSearchControllerPactTest {
-  private val results: MutableList<Flight> = mutableListOf()
+  private val repository = InMemoryFlightsRepository()
 
   @TestTarget
   @JvmField
   val target: Target = MockMvcTarget(
     controllers = listOf(
-      FlightSearchController(InMemoryFlightsRepository(results))
+      FlightSearchController(repository)
     )
   )
 
@@ -32,8 +32,8 @@ class FlightSearchControllerPactTest {
     "not available flight with id ef79d467-4864-432a-92c7-533e731cd6c3"
   )
   fun `with 4bded7c6-284e-4be5-8b9b-76813acb4b0b id`() {
-    results.clear()
-    results.add(
+    repository.clear()
+    repository.add(
       Flight(
         id = UUID.fromString("4bded7c6-284e-4be5-8b9b-76813acb4b0b"),
         departure = Departure(

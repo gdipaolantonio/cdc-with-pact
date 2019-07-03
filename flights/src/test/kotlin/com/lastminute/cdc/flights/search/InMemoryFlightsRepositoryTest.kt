@@ -38,12 +38,8 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(
-      listOf(
-        toBeDiscarded,
-        toBeSelected
-      )
-    )
+    val repository = InMemoryFlightsRepository()
+    repository.add(toBeDiscarded, toBeSelected)
 
     val flights = repository.loadBy("MXP", "STN", LocalDate.parse("2019-06-20"))
 
@@ -81,12 +77,8 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(
-      listOf(
-        toBeDiscarded,
-        toBeSelected
-      )
-    )
+    val repository = InMemoryFlightsRepository()
+    repository.add(toBeDiscarded, toBeSelected)
 
     val flights = repository.loadBy("MXP", "STN", LocalDate.parse("2019-06-20"))
 
@@ -124,12 +116,8 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(
-      listOf(
-        toBeDiscarded,
-        toBeSelected
-      )
-    )
+    val repository = InMemoryFlightsRepository()
+    repository.add(toBeDiscarded, toBeSelected)
 
     val flights = repository.loadBy("MXP", "STN", LocalDate.parse("2019-06-20"))
 
@@ -195,13 +183,12 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(
-      listOf(
-        flightDepartingFromPescara,
-        flightDepartingFromFiumicino,
-        flightDepartingFromBergamo,
-        flightDepartingFromMalpensa
-      )
+    val repository = InMemoryFlightsRepository()
+    repository.add(
+      flightDepartingFromPescara,
+      flightDepartingFromFiumicino,
+      flightDepartingFromBergamo,
+      flightDepartingFromMalpensa
     )
 
     val flights = repository.loadBy("MIL", "STN", LocalDate.parse("2019-06-20"))
@@ -268,13 +255,12 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(
-      listOf(
-        flightArrivingToPescara,
-        flightArrivingToFiumicino,
-        flightArrivingToBergamo,
-        flightArrivingToMalpensa
-      )
+    val repository = InMemoryFlightsRepository()
+    repository.add(
+      flightArrivingToPescara,
+      flightArrivingToFiumicino,
+      flightArrivingToBergamo,
+      flightArrivingToMalpensa
     )
 
     val flights = repository.loadBy("STN", "MIL", LocalDate.parse("2019-06-20"))
@@ -327,11 +313,10 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(
-      listOf(mxp_stn, bgy_ltn, fco_cgy)
-    )
+    val repository = InMemoryFlightsRepository()
+    repository.add(mxp_stn, bgy_ltn, fco_cgy)
 
-      val flights = repository.loadBy("MIL", "LON", LocalDate.parse("2019-06-20"))
+    val flights = repository.loadBy("MIL", "LON", LocalDate.parse("2019-06-20"))
 
     assertThat(flights).containsExactlyInAnyOrder(mxp_stn, bgy_ltn)
   }
@@ -367,12 +352,8 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(
-      listOf(
-        toBeDiscarded,
-        toBeSelected
-      )
-    )
+    val repository = InMemoryFlightsRepository()
+    repository.add(toBeDiscarded, toBeSelected)
 
     val flights = repository.loadBy("ROM", "LON", LocalDate.parse("2019-06-20"))
 
@@ -411,7 +392,8 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(listOf(unexpected, expected))
+    val repository = InMemoryFlightsRepository()
+    repository.add(unexpected, expected)
 
     val flight = repository.loadBy(id)
 
@@ -435,7 +417,8 @@ class InMemoryFlightsRepositoryTest {
       Money(TEN, "EUR")
     )
 
-    val repository = InMemoryFlightsRepository(listOf(unexpected))
+    val repository = InMemoryFlightsRepository()
+    repository.add(unexpected)
 
     val flight = repository.loadBy(UUID.fromString("ef79d467-4864-432a-92c7-533e731cd6c3"))
 
